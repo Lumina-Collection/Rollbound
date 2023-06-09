@@ -1,0 +1,19 @@
+name: ${name}
+version: ${version}
+main: ${group}.${name.toLowerCase()}.paper.RollboundPlugin
+description: Rollbound is part of the Lumina Collection of plugins.
+author: Loapu
+website: https://docs.luminacollection.net/rollbound/
+api-version: 1.19
+dependencies:
+  - name: Axios
+    required: true
+    bootstrap: false
+  - name: VentureChat
+    required: false
+    bootstrap: false
+load-after:
+  - name: Axios
+    bootstrap: false
+  - name: VentureChat
+    bootstrap: false
