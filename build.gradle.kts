@@ -6,7 +6,7 @@ subprojects {
     apply(plugin = "java-library")
 
     group = "net.luminacollection"
-    version = "1.0-SNAPSHOT"
+    version = "1.1-SNAPSHOT"
 
     plugins.withType<JavaPlugin> {
         configure<JavaPluginExtension> {
@@ -30,7 +30,7 @@ subprojects {
     }
 
     rootProject.extra.set("majorVersion", 1)
-    rootProject.extra.set("minorVersion", 0)
+    rootProject.extra.set("minorVersion", 1)
     rootProject.extra.set("patchVersion", determinePatchVersion())
     rootProject.extra.set("apiVersion", rootProject.extra.get("majorVersion").toString() + "." + rootProject.extra.get("minorVersion"))
     rootProject.extra.set("fullVersion", rootProject.extra.get("apiVersion").toString() + "." + rootProject.extra.get("patchVersion"))
