@@ -35,7 +35,7 @@ public class VentureChat
 	
 	public Entry<Integer, String> getRangeAndPermission(Player player)
 	{
-		if (!hookEnabled()) return Map.entry(Settings.CHAT_RANGE.get(), "");
+		if (!hookEnabled()) return null;
 		var chatPlayer = MineverseChatAPI.getOnlineMineverseChatPlayer(player);
 		var channel = chatPlayer.getCurrentChannel();
 		var range = channel.getDistance().intValue();

@@ -12,8 +12,13 @@ dependencies:
   - name: VentureChat
     required: false
     bootstrap: false
+  - name: CarbonChat
+    required: false
+    bootstrap: false
 load-after:
   - name: Axios
     bootstrap: false
   - name: VentureChat
+    bootstrap: false
+  - name: CarbonChat
     bootstrap: false

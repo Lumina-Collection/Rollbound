@@ -23,6 +23,8 @@ public class Messages implements MessagesInterface
 	public static final Messages COMMAND_ROLL_MODIFIER_POSITIVE = new Messages("command.roll.modifier.positive");
 	public static final Messages COMMAND_ROLL_MODIFIER_NEGATIVE = new Messages("command.roll.modifier.negative");
 	public static final Messages COMMAND_ROLL_SUCCESS_STATE = new Messages("command.roll.success-state");
+	public static final Messages COMMAND_ROLL_KEEP_HIGHEST = new Messages("command.roll.keep-highest");
+	public static final Messages COMMAND_ROLL_DROP_HIGHEST = new Messages("command.roll.drop-highest");
 	
 	private final Axios axios = AxiosProvider.get();
 	private final AxiosMessages axiosMessages;

@@ -92,4 +92,9 @@ public class RollboundPlugin extends JavaPlugin implements AxiosApiPlugin
 	{
 		return getDataFolder();
 	}
+	
+	public void debug(String message)
+	{
+		if (Settings.DEBUG.get()) getLogger().info( "[DEBUG] " + message);
+	}
 }

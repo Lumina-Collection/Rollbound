@@ -1,9 +1,7 @@
 import org.apache.groovy.util.Maps
-import org.gradle.crypto.checksum.Checksum
 
 plugins {
     id("com.github.johnrengelman.shadow") version "8.1.0"
-    id("org.gradle.crypto.checksum") version "1.4.0"
 }
 
 dependencies {
@@ -12,6 +10,7 @@ dependencies {
     implementation(libs.commandapi.shade)
     api(libs.axios)
     implementation(libs.venturechat)
+    api(libs.carbon)
 }
 
 tasks {
@@ -36,11 +35,4 @@ tasks {
     artifacts {
         archives(shadowJar)
     }
-}
-tasks.create("createChecksum", Checksum::class) {
-    dependsOn("shadowJar")
-    inputFiles.setFrom(tasks.get("shadowJar").outputs.files)
-    outputDirectory.set(file("${project.buildDir}/checksums"))
-    checksumAlgorithm.set(Checksum.Algorithm.SHA256)
-    appendFileNameToChecksum.set(true)
 }

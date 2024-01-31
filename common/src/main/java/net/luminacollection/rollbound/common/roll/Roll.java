@@ -13,6 +13,7 @@ public class Roll
 	private final Die[] dice;
 	private final int[] diceResults;
 	private final int modifier;
+	private final int keepHighest;
 	private final int totalResult;
 	private int threshold = 0;
 	
@@ -27,7 +28,8 @@ public class Roll
 			totalResultWithoutModifier += diceResults[i];
 		}
 		this.modifier = ParserStringDice.modifier(stringToParse);
-		this.totalResult = totalResultWithoutModifier + modifier;
+		this.keepHighest = ParserStringDice.keepHighest(stringToParse);
+		this.totalResult = totalResultWithoutModifier + modifier + keepHighest;
 	}
 	
 	public Map<Integer, Integer> diceWithResults() {
@@ -87,5 +89,10 @@ public class Roll
 	public int threshold()
 	{
 		return threshold;
+	}
+	
+	public int keepHighest()
+	{
+		return keepHighest;
 	}
 }

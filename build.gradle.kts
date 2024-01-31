@@ -1,6 +1,6 @@
 import java.io.ByteArrayOutputStream
 
-defaultTasks("build", "createChecksum")
+defaultTasks("build")
 
 subprojects {
     apply(plugin = "java-library")
@@ -42,5 +42,6 @@ subprojects {
         maven("https://repo.codemc.org/repository/maven-public/")
         maven("https://Loapu:${GITHUB_TOKEN}@maven.pkg.github.com/Loapu/Axios")
         flatDir { dirs(project.rootDir.path + "/libs") }
+        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
     }
 }

@@ -34,7 +34,7 @@ public class CommandRoll implements CommandsInterface
 		{
 			commands.add(new CommandAPICommand(COMMAND_NAME)
 							 .withShortDescription(COMMAND_SHORT_DESCRIPTION)
-							 .withPermission("command.roll"));
+							 .withPermission("rollbound.command.roll"));
 		}
 		command1(commands.get(0));
 		command2(commands.get(1));
