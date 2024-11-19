@@ -1,4 +1,5 @@
 dependencies {
-    api(libs.axios)
-    compileOnly(libs.paper)
+    implementation(libs.axios)
+    implementation(libs.adventure)
+    implementation(libs.minimessage)
 }

@@ -2,6 +2,7 @@ package net.luminacollection.rollbound.paper.hooks;
 
 import net.draycia.carbon.api.CarbonChat;
 import net.draycia.carbon.api.CarbonChatProvider;
+import net.kyori.adventure.audience.Audience;
 import net.luminacollection.rollbound.paper.RollboundPlugin;
 import net.luminacollection.rollbound.paper.configuration.Settings;
 import org.bukkit.Bukkit;
@@ -55,6 +56,26 @@ public class Carbon
 		catch (Exception e)
 		{
 			RollboundPlugin.instance().debug("Carbon hook failed to get range and permission: " + e.getMessage());
+			return null;
+		}
+	}
+	
+	public Audience partyAudience(Player player)
+	{
+		if (!hookEnabled()) return null;
+		RollboundPlugin.instance().debug("Carbon hook enabled, getting party audience...");
+		CarbonChat carbonChat = CarbonChatProvider.carbonChat();
+		try
+		{
+			var user = carbonChat.userManager().user(player.getUniqueId()).get();
+			var party = user.party().join();
+			if (party == null) return null;
+			var members = party.members();
+			return Audience.audience(members.stream().map(Bukkit::getPlayer).toList());
+		}
+		catch (Exception e)
+		{
+			RollboundPlugin.instance().debug("Carbon hook failed to get party audience: " + e.getMessage());
 			return null;
 		}
 	}

@@ -1,9 +1,10 @@
 [versions]
-paper = "1.20.2-R0.1-SNAPSHOT"
-commandapi = "9.3.0"
+paper = "1.21.3-R0.1-SNAPSHOT"
+commandapi = "9.6.1"
 axios = "1.1"
 venturechat = "3.6.0"
-carbon = "2.1.0-beta.15"
+carbon = "3.0.0-beta.27"
+adventure = "4.17.0"
 
 [libraries]
 paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
@@ -11,3 +12,5 @@ commandapi-shade = { module = "dev.jorel:commandapi-bukkit-shade", version.ref =
 axios = { module = "software.axios:api", version.ref = "axios" }
 venturechat = { group = "mineverse.Aust1n46.chat", name = "VentureChat", version.ref = "venturechat" }
 carbon = { module = "de.hexaoxi:carbonchat-api", version.ref = "carbon" }
+adventure = { module = "net.kyori:adventure-api", version.ref = "adventure" }
+minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }

@@ -11,6 +11,7 @@ import net.kyori.adventure.sound.Sound.Source;
 import net.luminacollection.rollbound.common.color.SuccessColor;
 import net.luminacollection.rollbound.common.roll.Roll;
 import net.luminacollection.rollbound.common.roll.SuccessState;
+import net.luminacollection.rollbound.common.roll.SuccessState.RoundingStrategy;
 import net.luminacollection.rollbound.common.roll.SuccessState.Triggered;
 import net.luminacollection.rollbound.common.utils.ParserStringDice;
 import net.luminacollection.rollbound.paper.RollboundPlugin;
@@ -124,7 +125,14 @@ public class RollManager
 				percentage = roll.diceResults()[0];
 			}
 			if (!total && percentage == 0) continue;
-			var triggeredBelow = triggered == Triggered.BELOW && percentage <= targetPercentage;
+			if (percentage == targetPercentage)
+			{
+				if (successState.roundingStrategy().equals(RoundingStrategy.UP)) percentage++;
+				else if (successState.roundingStrategy().equals(RoundingStrategy.DOWN)) percentage--;
+				else if (Settings.TRIGGERED.get().equalsIgnoreCase("ABOVE")) percentage++;
+				else percentage--;
+			}
+			var triggeredBelow = triggered == Triggered.BELOW && percentage < targetPercentage;
 			var triggeredAbove = triggered == Triggered.ABOVE && percentage > targetPercentage;
 			if (!triggeredBelow && !triggeredAbove) continue;
 			return successState;
@@ -145,6 +153,10 @@ public class RollManager
 		var permission = entry.getValue();
 		
 		Audience console = Audience.audience(Bukkit.getConsoleSender());
+		
+		var partyAudience = HooksManager.instance().partyAudience(player);
+		
+		if (partyAudience != null) return Audience.audience(partyAudience, console);
 		Audience players = switch (range)
 		{
 			case -1 -> Audience.audience(

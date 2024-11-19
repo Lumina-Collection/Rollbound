@@ -1,6 +1,7 @@
 package net.luminacollection.rollbound.paper;
 
 import net.luminacollection.rollbound.common.roll.SuccessState;
+import net.luminacollection.rollbound.paper.commands.CommandProbe;
 import net.luminacollection.rollbound.paper.commands.CommandProll;
 import net.luminacollection.rollbound.paper.commands.CommandRoll;
 import net.luminacollection.rollbound.paper.commands.CommandRollbound;
@@ -48,7 +49,8 @@ public class RollboundPlugin extends JavaPlugin implements AxiosApiPlugin
 		commands.addAll(Arrays.asList(
 			CommandRollbound.instance(),
 			CommandRoll.instance(),
-			CommandProll.instance()
+			CommandProll.instance(),
+			CommandProbe.instance()
 		));
 		
 		commands.forEach(CommandsInterface::register);

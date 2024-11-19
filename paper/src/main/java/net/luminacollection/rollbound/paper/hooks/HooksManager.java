@@ -1,5 +1,6 @@
 package net.luminacollection.rollbound.paper.hooks;
 
+import net.kyori.adventure.audience.Audience;
 import net.luminacollection.rollbound.paper.configuration.Settings;
 import org.bukkit.entity.Player;
 
@@ -28,5 +29,12 @@ public class HooksManager
 		if (rangeAndPermission == null) rangeAndPermission = Map.entry(Settings.CHAT_RANGE.get(), "");
 		
 		return rangeAndPermission;
+	}
+	
+	public Audience partyAudience(Player player)
+	{
+		var hookCarbon = Carbon.instance();
+		if (!hookCarbon.hookEnabled()) return null;
+		return hookCarbon.partyAudience(player);
 	}
 }

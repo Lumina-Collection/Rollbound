@@ -2,7 +2,7 @@ package net.luminacollection.rollbound.common.i18n;
 
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 import software.axios.api.Axios;
 import software.axios.api.AxiosProvider;
 import software.axios.api.i18n.AxiosMessages;
@@ -35,13 +35,13 @@ public class Messages implements MessagesInterface
 	}
 	
 	@Override
-	public @NonNull String toString(Locale locale)
+	public @NotNull String toString(Locale locale)
 	{
 		return axiosMessages.toString(locale);
 	}
 	
 	@Override
-	public @NonNull String toString()
+	public @NotNull String toString()
 	{
 		return axiosMessages.toString();
 	}
