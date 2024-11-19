@@ -1,16 +1,16 @@
 import java.io.ByteArrayOutputStream
 
-defaultTasks("build", "createChecksum")
+defaultTasks("build")
 
 subprojects {
     apply(plugin = "java-library")
 
     group = "net.luminacollection"
-    version = "1.0-SNAPSHOT"
+    version = "1.1-SNAPSHOT"
 
     plugins.withType<JavaPlugin> {
         configure<JavaPluginExtension> {
-            toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+            toolchain.languageVersion.set(JavaLanguageVersion.of(21))
         }
     }
 
@@ -30,7 +30,7 @@ subprojects {
     }
 
     rootProject.extra.set("majorVersion", 1)
-    rootProject.extra.set("minorVersion", 0)
+    rootProject.extra.set("minorVersion", 1)
     rootProject.extra.set("patchVersion", determinePatchVersion())
     rootProject.extra.set("apiVersion", rootProject.extra.get("majorVersion").toString() + "." + rootProject.extra.get("minorVersion"))
     rootProject.extra.set("fullVersion", rootProject.extra.get("apiVersion").toString() + "." + rootProject.extra.get("patchVersion"))
@@ -42,5 +42,6 @@ subprojects {
         maven("https://repo.codemc.org/repository/maven-public/")
         maven("https://Loapu:${GITHUB_TOKEN}@maven.pkg.github.com/Loapu/Axios")
         flatDir { dirs(project.rootDir.path + "/libs") }
+        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
     }
 }

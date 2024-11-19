@@ -19,17 +19,21 @@ public class Settings<T> implements SettingsInterface
 			"percentage", 10,
 			"triggered", "below",
 			"sound", "ui.toast.challenge_complete",
-			"pitch", 1.4F
+			"pitch", 1.4F,
+			"rounding-strategy", "up"
 		),
 		Map.of(
 			"id", "critical-failure",
 			"percentage", -98,
 			"triggered", "above",
 			"sound", "item.goat_horn.sound.5",
-			"pitch", 1.4F
+			"pitch", 1.4F,
+			"rounding-strategy", "none"
 		));
 	@SettingsField
 	public static Settings<Boolean> HOOKS_VENTURECHAT = new Settings<>("hooks.venturechat", Boolean.class, false);
+	@SettingsField
+	public static Settings<Boolean> HOOKS_CARBON = new Settings<>("hooks.carbon", Boolean.class, false);
 	@SettingsField
 	public static Settings<Integer> CHAT_RANGE = new Settings<>("defaults.chat-range", Integer.class, 30);
 	@SettingsField
@@ -38,6 +42,8 @@ public class Settings<T> implements SettingsInterface
 	public static Settings<Integer> NUMBER_OF_FACES = new Settings<>("defaults.number-of-faces", Integer.class, 100);
 	@SettingsField
 	public static Settings<List<Map<?, ?>>> SUCCESS_STATES = new Settings<>("defaults.success-states", (Class<List<Map<?,?>>>) (Class<?>) List.class, successStatesMap);
+	@SettingsField
+	public static Settings<Boolean> DEBUG = new Settings<>("general.enable-debug-messages", Boolean.class, false);
 	
 	private final RollboundPlugin plugin = RollboundPlugin.instance();
 	private final Axios axios = plugin.axios();

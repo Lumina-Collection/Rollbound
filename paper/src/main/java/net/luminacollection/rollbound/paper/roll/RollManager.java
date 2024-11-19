@@ -11,11 +11,13 @@ import net.kyori.adventure.sound.Sound.Source;
 import net.luminacollection.rollbound.common.color.SuccessColor;
 import net.luminacollection.rollbound.common.roll.Roll;
 import net.luminacollection.rollbound.common.roll.SuccessState;
+import net.luminacollection.rollbound.common.roll.SuccessState.RoundingStrategy;
 import net.luminacollection.rollbound.common.roll.SuccessState.Triggered;
 import net.luminacollection.rollbound.common.utils.ParserStringDice;
 import net.luminacollection.rollbound.paper.RollboundPlugin;
 import net.luminacollection.rollbound.paper.configuration.Settings;
 import net.luminacollection.rollbound.common.i18n.Messages;
+import net.luminacollection.rollbound.paper.hooks.HooksManager;
 import net.luminacollection.rollbound.paper.hooks.VentureChat;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -97,12 +99,22 @@ public class RollManager
 		return string;
 	}
 	
+	private String getKeepHighestString(Roll roll, Locale locale)
+	{
+		var keepHighest = roll.keepHighest();
+		var string = keepHighest < 0 ? Messages.COMMAND_ROLL_DROP_HIGHEST.toString(locale) : Messages.COMMAND_ROLL_KEEP_HIGHEST.toString(locale);
+		string = string.replace("<keep_highest>", String.valueOf(keepHighest));
+		return string;
+	}
+	
 	private SuccessState getSuccessState(Roll roll)
 	{
 		for (SuccessState successState : SuccessState.getAll())
 		{
 			var targetPercentage = Math.abs(successState.percentage());
-			var percentage = roll.threshold() == 0 ? 0F : (float) roll.totalResult() / roll.threshold() * 100F;
+			var threshold = successState.roundingStrategy().round(roll.threshold());
+			var totalResult = roll.totalResult();
+			var percentage = threshold == 0 ? 0F : (float) totalResult / threshold * 100F;
 			var triggered = successState.triggered();
 			var total = false;
 			if (successState.percentage() < 0)
@@ -113,7 +125,14 @@ public class RollManager
 				percentage = roll.diceResults()[0];
 			}
 			if (!total && percentage == 0) continue;
-			var triggeredBelow = triggered == Triggered.BELOW && percentage <= targetPercentage;
+			if (percentage == targetPercentage)
+			{
+				if (successState.roundingStrategy().equals(RoundingStrategy.UP)) percentage++;
+				else if (successState.roundingStrategy().equals(RoundingStrategy.DOWN)) percentage--;
+				else if (Settings.TRIGGERED.get().equalsIgnoreCase("ABOVE")) percentage++;
+				else percentage--;
+			}
+			var triggeredBelow = triggered == Triggered.BELOW && percentage < targetPercentage;
 			var triggeredAbove = triggered == Triggered.ABOVE && percentage > targetPercentage;
 			if (!triggeredBelow && !triggeredAbove) continue;
 			return successState;
@@ -129,14 +148,22 @@ public class RollManager
 	
 	private Audience getRangedAudience(Player player)
 	{
-		
-		var entry = VentureChat.instance().getRangeAndPermission(player);
+		var entry = HooksManager.instance().getRangeAndPermission(player);
 		var range = entry.getKey();
 		var permission = entry.getValue();
+		
 		Audience console = Audience.audience(Bukkit.getConsoleSender());
+		
+		var partyAudience = HooksManager.instance().partyAudience(player);
+		
+		if (partyAudience != null) return Audience.audience(partyAudience, console);
 		Audience players = switch (range)
 		{
-			case -1 -> Audience.audience(Bukkit.getServer().getOnlinePlayers());
+			case -1 -> Audience.audience(
+				Bukkit.getServer().getOnlinePlayers().stream().filter(
+					target -> permission.isEmpty() || target.hasPermission(permission)
+				).toList()
+			);
 			case 0 -> player;
 			default -> Audience.audience(
 				Bukkit.getServer().getOnlinePlayers().stream().filter(
@@ -157,6 +184,8 @@ public class RollManager
 		tagBuilder.add("results", getResultsString(roll, player.locale()), true);
 		tagBuilder.add("dice", getDiceGroupsString(roll, player.locale()), true);
 		tagBuilder.add("modifier", getModifierString(roll, player.locale()), true);
+		tagBuilder.add("keep_highest", getKeepHighestString(roll, player.locale()), true);
+		tagBuilder.add("threshold", roll.threshold());
 		tagBuilder.add("total", roll.totalResult());
 		var successState = getSuccessState(roll);
 		tagBuilder.add("success_state", getSuccessStateString(successState, player.locale()), true);

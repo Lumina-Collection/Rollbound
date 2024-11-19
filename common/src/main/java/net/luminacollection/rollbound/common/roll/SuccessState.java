@@ -9,13 +9,41 @@ import software.axios.api.i18n.MessagesInterface;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
-public record SuccessState(MessagesInterface message, int percentage, Triggered triggered, Sound sound)
+public record SuccessState(MessagesInterface message, int percentage, Triggered triggered, Sound sound, RoundingStrategy roundingStrategy)
 {
 	private static final List<SuccessState> successStates = new ArrayList<>();
 	
 	public enum Triggered {ABOVE, BELOW}
+	public enum RoundingStrategy
+	{
+		UP, DOWN, NEAREST, NONE;
+		public int round(int value)
+		{
+			var floatValue = (float) value;
+			floatValue = floatValue / 10;
+			switch (this)
+			{
+				case UP ->
+				{
+					value = (int) Math.ceil(floatValue);
+					value *= 10;
+				}
+				case DOWN ->
+				{
+					value = (int) Math.floor(floatValue);
+					value *= 10;
+				}
+				case NEAREST ->
+				{
+					value = Math.round(floatValue);
+					value *= 10;
+				}
+				default -> {}
+			}
+			return value;
+		}
+	}
 	
 	public SuccessState
 	{
@@ -34,9 +62,14 @@ public record SuccessState(MessagesInterface message, int percentage, Triggered 
 			var triggeredString = String.valueOf(map.get("triggered"));
 			var triggered = Triggered.BELOW;
 			if (triggeredString.equalsIgnoreCase("ABOVE")) triggered = Triggered.ABOVE;
+			var roundingStrategyString = String.valueOf(map.get("rounding-strategy"));
+			var roundingStrategy = RoundingStrategy.NONE;
+			if (roundingStrategyString.equalsIgnoreCase("UP")) roundingStrategy = RoundingStrategy.UP;
+			else if (roundingStrategyString.equalsIgnoreCase("DOWN")) roundingStrategy = RoundingStrategy.DOWN;
+			else if (roundingStrategyString.equalsIgnoreCase("NEAREST")) roundingStrategy = RoundingStrategy.NEAREST;
 			var sound = Sound.sound(Key.key(String.valueOf(map.get("sound"))), Source.MASTER, 2F, Float.parseFloat(map.get("pitch").toString()));
 			
-			successStates.add(new SuccessState(message, percentage, triggered, sound));
+			successStates.add(new SuccessState(message, percentage, triggered, sound, roundingStrategy));
 		}
 	}
 	
