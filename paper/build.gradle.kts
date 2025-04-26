@@ -1,8 +1,8 @@
 import org.apache.groovy.util.Maps
 
 plugins {
-    id("io.github.goooler.shadow") version "8.1.7"
-    id("io.papermc.paperweight.userdev") version "1.+"
+    id("com.gradleup.shadow") version "9.+"
+    id("io.papermc.paperweight.userdev") version "2.+"
 }
 
 dependencies {
@@ -21,7 +21,7 @@ tasks {
             val properties = Maps.of(
                 "name", "Rollbound",
                 "version", rootProject.extra.get("fullVersion"),
-                "group", project.group
+                "group", rootProject.group
             )
             expand(properties)
         }
