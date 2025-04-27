@@ -4,12 +4,14 @@ import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.IntegerArgument;
 import net.luminacollection.rollbound.common.roll.Roll;
+import net.luminacollection.rollbound.paper.RollboundPlugin;
 import net.luminacollection.rollbound.paper.roll.RollManager;
 import software.axios.api.command.CommandsInterface;
 
 public class CommandProbe implements CommandsInterface
 {
 	private static CommandProbe instance;
+	private final RollboundPlugin plugin = RollboundPlugin.instance();
 	private final String COMMAND_NAME = "probe";
 	private final CommandAPICommand command = new CommandAPICommand(COMMAND_NAME);
 	
@@ -41,7 +43,7 @@ public class CommandProbe implements CommandsInterface
 	@Override
 	public void register()
 	{
-		command.register();
+		command.register(plugin);
 	}
 	
 	@Override

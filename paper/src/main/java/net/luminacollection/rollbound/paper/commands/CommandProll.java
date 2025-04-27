@@ -91,7 +91,9 @@ public class CommandProll implements CommandsInterface
 	@Override
 	public void register()
 	{
-		commands.forEach(CommandAPICommand::register);
+		commands.forEach(
+			command ->	command.register(plugin)
+		);
 	}
 	
 	@Override

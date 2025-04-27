@@ -19,12 +19,11 @@ subprojects {
     }
 
     fun determinePatchVersion(): Any {
-        val tagInfo = ByteArrayOutputStream()
-        exec {
-            commandLine("git", "describe", "--tags")
-            standardOutput = tagInfo
-        }
-        val tagInfoString = tagInfo.toString()
+        val process = ProcessBuilder("git", "describe", "--tags")
+            .redirectErrorStream(true)
+            .start()
+        process.waitFor()
+        val tagInfoString = process.inputReader().readText().trim()
         if (!tagInfoString.contains('-')) return 0
         return tagInfoString.split('-')[1]
     }
