@@ -21,7 +21,7 @@ tasks {
             val properties = Maps.of(
                 "name", "Rollbound",
                 "version", rootProject.extra.get("fullVersion"),
-                "group", rootProject.group
+                "group", "net.luminacollection"
             )
             expand(properties)
         }

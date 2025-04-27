@@ -67,7 +67,7 @@ public class CommandRollbound implements CommandsInterface
 	@Override
 	public void register()
 	{
-		command.register();
+		command.register(plugin);
 	}
 	
 	@Override
