@@ -1,0 +1,3 @@
+files:
+  - source: /paper/src/main/resources/i18n/default/default.properties
+    translation: /paper/src/main/resources/i18n/default/default_%two_letters_code%.properties
